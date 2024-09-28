@@ -33,5 +33,6 @@ async def assign_case(case_id: int, user_id: int, db: AsyncSession = Depends(get
         message=PushNotificationInput(message="Case assigned to you", user_id=user_id)
         )
     except RuntimeError as e:
+        # Bypassing the websocket unavailabilty for storing it in the redis
         await redis_manager.store_message(user_id=user_id,message="Case assigned to you")
     return assigned
